@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { fetchProfile, logoutUser } from "../services/auth.service";
 import { clearToken } from "../utils/token";
-
 import type { UserProfile } from "../types/user.types";
 
 export const useAuth = () => {

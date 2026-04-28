@@ -3,8 +3,10 @@ import { User, Lock, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../../services/auth.service";
 import { saveToken } from "../../utils/token";
+import { useToast } from "../../hooks/useToast";
 
 export default function AdminLoginPage() {
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +25,7 @@ export default function AdminLoginPage() {
         username,
         password,
       });
-
+      toast.success("Login  successfully");
       saveToken(data.token);
 
       navigate(data.redirectUrl || "/admin");

@@ -10,6 +10,7 @@ import AdminDashboardPage from "../pages/dashboard/admin/AdminDashboardPage";
 import AdminSelectorPage from "../pages/dashboard/admin/AdminSelectorPage";
 import ExamConfiguration from "../pages/dashboard/admin/ExamConfigration";
 import ReviewPublish from "../pages/dashboard/admin/ReviewPublish";
+import NotFound from "../pages/NotFound";
 export const AppRoutes = () => {
   return (
     <Routes>
@@ -42,9 +43,8 @@ export const AppRoutes = () => {
       </Route>
 
       {/* layout wrapper for admin  */}
-       <Route element={<AdminLayout />}>
-
-         <Route
+      <Route element={<AdminLayout />}>
+        <Route
           path="/admin"
           element={
             <ProtectedRoute role="admin">
@@ -63,27 +63,26 @@ export const AppRoutes = () => {
         />
 
         <Route
-    path="/admin/examconfigration"
-    element={
-      <ProtectedRoute role="admin">
-        <ExamConfiguration />
-      </ProtectedRoute>
-    }
-  />
+          path="/admin/examconfigration"
+          element={
+            <ProtectedRoute role="admin">
+              <ExamConfiguration />
+            </ProtectedRoute>
+          }
+        />
 
-  <Route
-    path="/admin/review_publish"
-    element={
-      <ProtectedRoute role="admin">
-        <ReviewPublish />
-      </ProtectedRoute>
-    }
-  />
-
+        <Route
+          path="/admin/review_publish"
+          element={
+            <ProtectedRoute role="admin">
+              <ReviewPublish />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       {/* 404 */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

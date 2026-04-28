@@ -11,8 +11,11 @@ import {
   Loader2,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { fetchExamById, updateExamStatus,  } from "../../../services/exam.service";
-import type { ExamData, Mapping  } from "../../../services/exam.service";
+import {
+  fetchExamById,
+  updateExamStatus,
+} from "../../../services/exam.service";
+import type { ExamData, Mapping } from "../../../services/exam.service";
 export default function ReviewPublish() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -120,9 +123,7 @@ export default function ReviewPublish() {
               </h2>
             </div>
             <button
-              onClick={() =>
-                navigate(`/admin/exam-configuration?id=${examId}`)
-              }
+              onClick={() => navigate(`/admin/exam-configuration?id=${examId}`)}
               className="text-sm font-bold text-[#14223E] hover:text-blue-600 transition"
             >
               Edit
@@ -263,7 +264,9 @@ export default function ReviewPublish() {
               </div>
             ))}
             {shifts.length === 0 && (
-              <p className="text-center text-slate-400 py-4">No shifts defined</p>
+              <p className="text-center text-slate-400 py-4">
+                No shifts defined
+              </p>
             )}
           </div>
 
@@ -365,9 +368,7 @@ export default function ReviewPublish() {
 
         <div className="flex items-center gap-6">
           <button
-            onClick={() =>
-              navigate(`/admin/exam-configuration?id=${examId}`)
-            }
+            onClick={() => navigate(`/admin/exam-configuration?id=${examId}`)}
             className="text-[14px] font-bold text-[#14223E] hover:text-blue-600 transition"
           >
             Back to Configuration

@@ -1,6 +1,5 @@
 
 import { setNavigator } from "./utils/navigation";
-
 import { AppRoutes } from "./routes/AppRoutes";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,6 @@ function App() {
 
   useEffect(() => {
     /* Register navigator globally */
-
     setNavigator(navigate);
 
   }, [navigate]);

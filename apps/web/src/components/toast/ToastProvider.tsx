@@ -12,7 +12,7 @@ import type {
 
 interface ToastProviderProps {
   children: ReactNode;
-  position?: ToastPosition;
+  position?: ToastPosition; 
 }
 
 interface ToastContextProps {

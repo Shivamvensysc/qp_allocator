@@ -31,9 +31,8 @@ export default function SelectorLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  console.log("success value", success);
 
-    const [focused, setFocused] = useState<string | null>(null);
+  const [focused, setFocused] = useState<string | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -77,24 +76,17 @@ export default function SelectorLoginPage() {
 
     setLoading(true);
     setError("");
-    console.log("my selector login are call or not ")
+    console.log("my selector login are call or not ");
     try {
       const data = await loginSelector({
         username,
         password,
         examName: selectedExam,
       });
-
-      /* Save Token */
-
       saveToken(data.token);
-
-      /* Redirect */
-
       navigate(data.redirectUrl || "/selectorControl");
     } catch (err: any) {
       const message = err?.response?.data?.error || err.message;
-
       setError(message);
     } finally {
       setLoading(false);
@@ -104,10 +96,8 @@ export default function SelectorLoginPage() {
   const handleForceLogout = async () => {
     if (!username || !password) {
       setError("Please enter username and password");
-
       return;
     }
-
     setLoading(true);
     setError("");
     setSuccess("");
@@ -133,7 +123,6 @@ export default function SelectorLoginPage() {
         <div className="w-full max-w-md">
           {/* Card */}
           <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden">
-            {/* Top accent bar */}
             <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400" />
 
             <div className="px-10 py-10">

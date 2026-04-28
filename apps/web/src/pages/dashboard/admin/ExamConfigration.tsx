@@ -97,10 +97,8 @@ export default function ExamConfiguration() {
   const [noOfIteration, setNoOfIteration] = useState<number>(5);
   const [rotationType, setRotationType] = useState<string>("manual_roll");
   const [reUsableSet, setReUsableSet] = useState<string>("no");
-
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
-
   const [newShift, setNewShift] = useState<Shift>({
     date: "",
     startTime: "",
@@ -114,6 +112,9 @@ export default function ExamConfiguration() {
   const [isShiftBoxOpen, setIsShiftBoxOpen] = useState(false);
   const [isSubjectBoxOpen, setIsSubjectBoxOpen] = useState(false);
 
+  // Form validation errors state
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
   // Validation state for shift with touched tracking
   const [shiftErrors, setShiftErrors] = useState({
     date: "",
@@ -126,6 +127,15 @@ export default function ExamConfiguration() {
     date: false,
     startTime: false,
     endTime: false,
+  });
+
+  // Track touched state for form fields
+  const [touchedFormFields, setTouchedFormFields] = useState({
+    examName: false,
+    regulatoryBody: false,
+    examCode: false,
+    startDate: false,
+    endDate: false,
   });
 
   // Function to validate a specific field
@@ -413,64 +423,64 @@ export default function ExamConfiguration() {
   };
 
   const validateForm = (status: "draft" | "publish") => {
-    const errors: string[] = [];
+    const newErrors: Record<string, string> = {};
 
     // Basic Info
-    if (!examName.trim()) errors.push("Exam Name is required.");
-    if (!regulatoryBody.trim()) errors.push("Regulatory Body is required.");
-    if (!examCode.trim()) errors.push("Exam Code is required.");
-    if (!startDate) errors.push("Start Date is required.");
-    if (!endDate) errors.push("End Date is required.");
+    if (!examName.trim()) newErrors.examName = "Exam Name is required";
+    if (!regulatoryBody.trim())
+      newErrors.regulatoryBody = "Regulatory Body is required";
+    if (!examCode.trim()) newErrors.examCode = "Exam Code is required";
+    if (!startDate) newErrors.startDate = "Start Date is required";
+    if (!endDate) newErrors.endDate = "End Date is required";
 
     // Configuration
     if (codingType === "1") {
-      errors.push("Please select a Set Coding Type (Alpha-Numeric or Colour).");
+      newErrors.codingType = "Please select a Set Coding Type";
     } else {
       if (totalSets <= 0) {
-        errors.push("Total Paper Sets must be greater than 0.");
+        newErrors.totalSets = "Total Paper Sets must be greater than 0";
       } else {
         // Validate set values
         for (let i = 0; i < totalSets; i++) {
           if (codingType === "Colour") {
-            if (!setColors[i])
-              errors.push(`Color for Set ${i + 1} is not assigned.`);
+            if (!setColors[i]) {
+              newErrors[`setColor_${i}`] =
+                `Color for Set ${i + 1} is not assigned`;
+            }
           } else {
-            if (!setCodes[i] || !setCodes[i].trim())
-              errors.push(`Code for Set ${i + 1} is not assigned.`);
+            if (!setCodes[i] || !setCodes[i].trim()) {
+              newErrors[`setCode_${i}`] =
+                `Code for Set ${i + 1} is not assigned`;
+            }
           }
         }
       }
     }
 
-    if (noOfIteration <= 0)
-      errors.push("Randomization Cycles must be at least 1.");
+    if (noOfIteration <= 0) {
+      newErrors.noOfIteration = "Randomization Cycles must be at least 1";
+    }
 
     // Shifts
     if (shifts.length === 0) {
-      errors.push("At least one shift must be created.");
+      newErrors.shifts = "At least one shift must be created";
     }
 
     // Subjects
     if (subjects.length === 0) {
-      errors.push("At least one subject must be registered.");
+      newErrors.subjects = "At least one subject must be registered";
     } else {
       // Mapping
       const unlinkedSubjects = subjects.filter(
         (sub) => sub.shiftIndex === null,
       );
       if (unlinkedSubjects.length > 0) {
-        errors.push(
-          `${unlinkedSubjects.length} subject(s) are not linked to any shift.`,
-        );
+        newErrors.subjectMapping = `${unlinkedSubjects.length} subject(s) are not linked to any shift`;
       }
     }
 
-    if (errors.length > 0) {
-      alert("Please fill all required fields:\n\n• " + errors.join("\n• "));
-      return false;
-    }
-
-    return true;
+    setFormErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSave = async (status: "draft" | "publish") => {
@@ -521,6 +531,11 @@ export default function ExamConfiguration() {
       alert(err?.response?.data?.error || "Failed to save exam");
     }
   };
+
+  const handleFormFieldBlur = (field: string) => {
+    setTouchedFormFields((prev) => ({ ...prev, [field]: true }));
+  };
+
   return (
     <div className="w-full min-h-screen bg-[#F9FAFB] text-slate-900 font-sans">
       <div className="max-w-[1600px] mx-auto p-4">
@@ -586,11 +601,21 @@ export default function ExamConfiguration() {
                     Exam Name
                   </label>
                   <input
-                    className="bg-[#F8F9FA] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all"
+                    className={`bg-[#F8F9FA] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all ${
+                      touchedFormFields.examName && formErrors.examName
+                        ? "border-red-500"
+                        : "border-slate-400"
+                    }`}
                     placeholder="e.g., Annual Board Exams 2026"
                     value={examName}
                     onChange={(e) => setExamName(e.target.value)}
+                    onBlur={() => handleFormFieldBlur("examName")}
                   />
+                  {touchedFormFields.examName && formErrors.examName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.examName}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1.5 md:gap-2">
@@ -598,11 +623,21 @@ export default function ExamConfiguration() {
                     Exam Code
                   </label>
                   <input
-                    className="bg-[#F8F9FA] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all"
+                    className={`bg-[#F8F9FA] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all ${
+                      touchedFormFields.examCode && formErrors.examCode
+                        ? "border-red-500"
+                        : "border-slate-400"
+                    }`}
                     placeholder="e.g., EXAM-2026"
                     value={examCode}
                     onChange={(e) => setExamCode(e.target.value)}
+                    onBlur={() => handleFormFieldBlur("examCode")}
                   />
+                  {touchedFormFields.examCode && formErrors.examCode && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.examCode}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1.5 md:gap-2">
@@ -610,11 +645,23 @@ export default function ExamConfiguration() {
                     Regulatory Body
                   </label>
                   <input
-                    className="bg-[#F8F9FA] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all"
+                    className={`bg-[#F8F9FA] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all ${
+                      touchedFormFields.regulatoryBody &&
+                      formErrors.regulatoryBody
+                        ? "border-red-500"
+                        : "border-slate-400"
+                    }`}
                     placeholder="e.g., Regulatory Body"
                     value={regulatoryBody}
                     onChange={(e) => setRegulatoryBody(e.target.value)}
+                    onBlur={() => handleFormFieldBlur("regulatoryBody")}
                   />
+                  {touchedFormFields.regulatoryBody &&
+                    formErrors.regulatoryBody && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {formErrors.regulatoryBody}
+                      </p>
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-1.5 md:gap-2">
@@ -625,12 +672,21 @@ export default function ExamConfiguration() {
                     type="number"
                     min="1"
                     max="50"
-                    className="bg-[#F8F9FA] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all"
+                    className={`bg-[#F8F9FA] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all ${
+                      formErrors.noOfIteration
+                        ? "border-red-500"
+                        : "border-slate-400"
+                    }`}
                     value={noOfIteration}
                     onChange={(e) =>
                       setNoOfIteration(parseInt(e.target.value) || 4)
                     }
                   />
+                  {formErrors.noOfIteration && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.noOfIteration}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1.5 md:gap-2">
@@ -646,12 +702,22 @@ export default function ExamConfiguration() {
                   >
                     <input
                       type="date"
-                      className="bg-[#F8F9FA] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full cursor-pointer transition-all"
+                      className={`bg-[#F8F9FA] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full cursor-pointer transition-all ${
+                        touchedFormFields.startDate && formErrors.startDate
+                          ? "border-red-500"
+                          : "border-slate-400"
+                      }`}
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
+                      onBlur={() => handleFormFieldBlur("startDate")}
                     />
                     <CalendarDays className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                   </div>
+                  {touchedFormFields.startDate && formErrors.startDate && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.startDate}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1.5 md:gap-2">
@@ -667,12 +733,22 @@ export default function ExamConfiguration() {
                   >
                     <input
                       type="date"
-                      className="bg-[#F8F9FA] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full cursor-pointer transition-all"
+                      className={`bg-[#F8F9FA] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full cursor-pointer transition-all ${
+                        touchedFormFields.endDate && formErrors.endDate
+                          ? "border-red-500"
+                          : "border-slate-400"
+                      }`}
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
+                      onBlur={() => handleFormFieldBlur("endDate")}
                     />
                     <CalendarDays className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                   </div>
+                  {touchedFormFields.endDate && formErrors.endDate && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.endDate}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1.5 md:gap-2">
@@ -702,8 +778,17 @@ export default function ExamConfiguration() {
                     onChange={(e) =>
                       setTotalSets(parseInt(e.target.value) || 0)
                     }
-                    className="bg-[#F4F5F9] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all"
+                    className={`bg-[#F4F5F9] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full transition-all ${
+                      formErrors.totalSets
+                        ? "border-red-500"
+                        : "border-slate-400"
+                    }`}
                   />
+                  {formErrors.totalSets && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.totalSets}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1.5 md:gap-2">
@@ -767,7 +852,11 @@ export default function ExamConfiguration() {
                     <select
                       value={codingType}
                       onChange={(e) => setCodingType(e.target.value)}
-                      className="bg-[#F8F9FA] border border-slate-400 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full appearance-none transition-all"
+                      className={`bg-[#F8F9FA] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-[13px] md:text-[14px] text-slate-800 focus:ring-2 focus:ring-[#162A42] outline-none w-full appearance-none transition-all ${
+                        formErrors.codingType
+                          ? "border-red-500"
+                          : "border-slate-400"
+                      }`}
                     >
                       <option value="1">Select...</option>
                       <option value="Alpha-Numeric">Alpha-Numeric</option>
@@ -775,6 +864,11 @@ export default function ExamConfiguration() {
                     </select>
                     <ChevronDown className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                   </div>
+                  {formErrors.codingType && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.codingType}
+                    </p>
+                  )}
                 </div>
 
                 {(codingType === "Colour" || codingType === "Alpha-Numeric") &&
@@ -826,99 +920,164 @@ export default function ExamConfiguration() {
                           (_, idx) => (
                             <div key={idx} className="group/set relative">
                               {codingType === "Colour" ? (
-                                <Popover>
-                                  <PopoverTrigger asChild>
-                                    <button className="w-full text-left focus:outline-none">
-                                      <div className="bg-slate-50/50 border border-slate-300 rounded-xl p-3 md:p-4 hover:border-blue-200 hover:bg-white hover:shadow-xl transition-all duration-300 active:scale-[0.98]">
-                                        <div className="flex items-center justify-between mb-3 md:mb-4">
-                                          <span className="text-[9px] md:text-[10px] font-black text-slate-500 tracking-tighter uppercase">
-                                            Set{" "}
-                                            {String(idx + 1).padStart(2, "0")}
-                                          </span>
-                                          <div className="p-1 bg-white rounded-lg shadow-sm border border-slate-200">
-                                            <Plus className="w-3 h-3" />
+                                <>
+                                  <Popover>
+                                    <PopoverTrigger asChild>
+                                      <button className="w-full text-left focus:outline-none">
+                                        <div
+                                          className={`bg-slate-50/50 border rounded-xl p-3 md:p-4 hover:border-blue-200 hover:bg-white hover:shadow-xl transition-all duration-300 active:scale-[0.98] ${
+                                            formErrors[`setColor_${idx}`]
+                                              ? "border-red-500"
+                                              : "border-slate-300"
+                                          }`}
+                                        >
+                                          <div className="flex items-center justify-between mb-3 md:mb-4">
+                                            <span className="text-[9px] md:text-[10px] font-black text-slate-500 tracking-tighter uppercase">
+                                              Set{" "}
+                                              {String(idx + 1).padStart(2, "0")}
+                                            </span>
+                                            <div className="p-1 bg-white rounded-lg shadow-sm border border-slate-200">
+                                              <Plus className="w-3 h-3" />
+                                            </div>
                                           </div>
-                                        </div>
 
-                                        <div className="relative">
-                                          <div
-                                            className="w-full h-10 md:h-12 rounded-lg  shadow-inner border border-white transition-transform duration-500 group-hover/set:scale-[1.02]"
-                                            style={{
-                                              backgroundColor:
-                                                setColors[idx] || "#f1f5f9",
-                                              boxShadow: setColors[idx]
-                                                ? `0 8px 20px -6px ${setColors[idx]}44`
-                                                : "none",
-                                            }}
-                                          >
-                                            {!setColors[idx] && (
-                                              <div className="h-full flex items-center justify-center opacity-30">
-                                                <Palette className="w-3.5 h-4 text-slate-400" />
+                                          <div className="relative">
+                                            <div
+                                              className="w-full h-10 md:h-12 rounded-lg  shadow-inner border border-white transition-transform duration-500 group-hover/set:scale-[1.02]"
+                                              style={{
+                                                backgroundColor:
+                                                  setColors[idx] || "#f1f5f9",
+                                                boxShadow: setColors[idx]
+                                                  ? `0 8px 20px -6px ${setColors[idx]}44`
+                                                  : "none",
+                                              }}
+                                            >
+                                              {!setColors[idx] && (
+                                                <div className="h-full flex items-center justify-center opacity-30">
+                                                  <Palette className="w-3.5 h-4 text-slate-400" />
+                                                </div>
+                                              )}
+                                            </div>
+                                            {setColors[idx] && (
+                                              <div className="absolute -bottom-1 -right-1 w-3 h-3 md:w-4 md:h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
                                               </div>
                                             )}
                                           </div>
-                                          {setColors[idx] && (
-                                            <div className="absolute -bottom-1 -right-1 w-3 h-3 md:w-4 md:h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
-                                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                                            </div>
+                                        </div>
+                                      </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                      className="w-auto p-0 border-none shadow-2xl rounded-2xl bg-white"
+                                      side="top"
+                                      align="center"
+                                    >
+                                      <ChromePicker
+                                        color={setColors[idx] || "#ffffff"}
+                                        onChangeComplete={(color) => {
+                                          setSetColors((prev) => ({
+                                            ...prev,
+                                            [idx]: color.hex,
+                                          }));
+                                          // Clear error when color is selected
+                                          if (formErrors[`setColor_${idx}`]) {
+                                            setFormErrors((prev) => {
+                                              const newErrors = { ...prev };
+                                              delete newErrors[
+                                                `setColor_${idx}`
+                                              ];
+                                              return newErrors;
+                                            });
+                                          }
+                                        }}
+                                        disableAlpha
+                                      />
+                                      <div className="p-3 border-t border-slate-50 bg-slate-50/50 flex justify-center">
+                                        <div className="grid grid-cols-6 gap-2">
+                                          {PRESET_COLORS.slice(0, 12).map(
+                                            (c) => (
+                                              <button
+                                                key={c}
+                                                onClick={() => {
+                                                  setSetColors((prev) => ({
+                                                    ...prev,
+                                                    [idx]: c,
+                                                  }));
+                                                  // Clear error when color is selected
+                                                  if (
+                                                    formErrors[
+                                                      `setColor_${idx}`
+                                                    ]
+                                                  ) {
+                                                    setFormErrors((prev) => {
+                                                      const newErrors = {
+                                                        ...prev,
+                                                      };
+                                                      delete newErrors[
+                                                        `setColor_${idx}`
+                                                      ];
+                                                      return newErrors;
+                                                    });
+                                                  }
+                                                }}
+                                                className="w-4 h-4 md:w-5 md:h-5 rounded-full border border-white shadow-sm hover:scale-125 transition-transform"
+                                                style={{ backgroundColor: c }}
+                                              />
+                                            ),
                                           )}
                                         </div>
                                       </div>
-                                    </button>
-                                  </PopoverTrigger>
-                                  <PopoverContent
-                                    className="w-auto p-0 border-none shadow-2xl rounded-2xl bg-white"
-                                    side="top"
-                                    align="center"
-                                  >
-                                    <ChromePicker
-                                      color={setColors[idx] || "#ffffff"}
-                                      onChangeComplete={(color) => {
-                                        setSetColors((prev) => ({
-                                          ...prev,
-                                          [idx]: color.hex,
-                                        }));
-                                      }}
-                                      disableAlpha
-                                    />
-                                    <div className="p-3 border-t border-slate-50 bg-slate-50/50 flex justify-center">
-                                      <div className="grid grid-cols-6 gap-2">
-                                        {PRESET_COLORS.slice(0, 12).map((c) => (
-                                          <button
-                                            key={c}
-                                            onClick={() =>
-                                              setSetColors((prev) => ({
-                                                ...prev,
-                                                [idx]: c,
-                                              }))
-                                            }
-                                            className="w-4 h-4 md:w-5 md:h-5 rounded-full border border-white shadow-sm hover:scale-125 transition-transform"
-                                            style={{ backgroundColor: c }}
-                                          />
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </PopoverContent>
-                                </Popover>
+                                    </PopoverContent>
+                                  </Popover>
+                                  {formErrors[`setColor_${idx}`] && (
+                                    <p className="text-red-500 text-xs mt-1 text-center">
+                                      {formErrors[`setColor_${idx}`]}
+                                    </p>
+                                  )}
+                                </>
                               ) : (
-                                <div className="bg-slate-50/50 border border-slate-300 rounded-xl  p-3 hover:bg-white hover:shadow-xl transition-all duration-300">
-                                  <div className="flex items-center justify-between mb-3 ">
-                                    <span className="text-[9px] md:text-[10px] font-black text-slate-500 tracking-tighter uppercase">
-                                      Set {String(idx + 1).padStart(2, "0")}
-                                    </span>
+                                <div>
+                                  <div
+                                    className={`bg-slate-50/50 border rounded-xl p-3 hover:bg-white hover:shadow-xl transition-all duration-300 ${
+                                      formErrors[`setCode_${idx}`]
+                                        ? "border-red-500"
+                                        : "border-slate-300"
+                                    }`}
+                                  >
+                                    <div className="flex items-center justify-between mb-3 ">
+                                      <span className="text-[9px] md:text-[10px] font-black text-slate-500 tracking-tighter uppercase">
+                                        Set {String(idx + 1).padStart(2, "0")}
+                                      </span>
+                                    </div>
+                                    <input
+                                      type="text"
+                                      placeholder="CODE"
+                                      value={setCodes[idx] || ""}
+                                      onChange={(e) => {
+                                        setSetCodes({
+                                          ...setCodes,
+                                          [idx]: e.target.value,
+                                        });
+                                        // Clear error when code is entered
+                                        if (
+                                          formErrors[`setCode_${idx}`] &&
+                                          e.target.value.trim()
+                                        ) {
+                                          setFormErrors((prev) => {
+                                            const newErrors = { ...prev };
+                                            delete newErrors[`setCode_${idx}`];
+                                            return newErrors;
+                                          });
+                                        }
+                                      }}
+                                      className="bg-white border border-slate-300 rounded-lg px-2 py-2.5 text-[12px] md:text-[14px] font-black text-[#14223E] outline-none w-full text-center focus:ring-1 transition-all placeholder:text-slate-200 uppercase tracking-widest"
+                                    />
                                   </div>
-                                  <input
-                                    type="text"
-                                    placeholder="CODE"
-                                    value={setCodes[idx] || ""}
-                                    onChange={(e) =>
-                                      setSetCodes({
-                                        ...setCodes,
-                                        [idx]: e.target.value,
-                                      })
-                                    }
-                                    className="bg-white border border-slate-300 rounded-lg px-2 py-2.5 text-[12px] md:text-[14px] font-black text-[#14223E] outline-none w-full text-center focus:ring-1  transition-all placeholder:text-slate-200 uppercase tracking-widest"
-                                  />
+                                  {formErrors[`setCode_${idx}`] && (
+                                    <p className="text-red-500 text-xs mt-1 text-center">
+                                      {formErrors[`setCode_${idx}`]}
+                                    </p>
+                                  )}
                                 </div>
                               )}
                             </div>
@@ -944,6 +1103,14 @@ export default function ExamConfiguration() {
                     </button>
                   )}
                 </div>
+
+                {formErrors.shifts && (
+                  <div className="mb-4 p-2 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-600 text-xs font-medium">
+                      {formErrors.shifts}
+                    </p>
+                  </div>
+                )}
 
                 {isShiftBoxOpen && (
                   <div className="bg-white border border-slate-200 rounded-2xl p-4 md:p-6 mb-6 shadow-sm transition-all">
@@ -1168,6 +1335,22 @@ export default function ExamConfiguration() {
                   </button>
                 )}
               </div>
+
+              {formErrors.subjects && (
+                <div className="mb-4 p-2 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-600 text-xs font-medium">
+                    {formErrors.subjects}
+                  </p>
+                </div>
+              )}
+
+              {formErrors.subjectMapping && (
+                <div className="mb-4 p-2 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-600 text-xs font-medium">
+                    {formErrors.subjectMapping}
+                  </p>
+                </div>
+              )}
 
               {isSubjectBoxOpen && (
                 <div className="bg-[#F8F9FA] border border-slate-200 rounded-2xl p-4 md:p-6 mb-6 md:mb-8 shadow-sm transition-all">

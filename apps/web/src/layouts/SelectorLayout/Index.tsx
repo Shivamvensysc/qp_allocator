@@ -14,9 +14,7 @@ const MainLayout: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-white">
-    
       <Sidebar />
-
       <div className="flex flex-col flex-1">
         <div className="flex flex-1 overflow-y-auto min-h-screen">
           <Outlet />

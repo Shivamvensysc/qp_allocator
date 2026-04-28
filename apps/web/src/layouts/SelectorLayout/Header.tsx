@@ -18,16 +18,14 @@ const Header: React.FC = () => {
   return (
     <header className="bg-white border-b border-slate-200 px-8 py-3 sticky top-0 z-50">
       <div className="flex items-center justify-between">
-        {/* Left side - Title and navigation */}
+
         <div className="flex items-center gap-10">
           <h2 className="text-xl font-black text-[#0b1628] uppercase tracking-tighter">
             Paper Allocator Pro
           </h2>
         </div>
 
-        {/* Right side - Search, notifications, profile */}
         <div className="flex items-center gap-6">
-          {/* User Profile */}
           <div className="flex items-center gap-4 pl-6 border-l border-slate-200">
             <div className="text-right">
               <p className="text-xs font-bold text-slate-900">

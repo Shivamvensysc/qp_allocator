@@ -6,7 +6,6 @@ export interface LoginPayload {
   examName?: string;
 }
 
-
 export const loginAdmin = async (payload: LoginPayload) => {
   const res = await axios.post("/api/login", payload);
 

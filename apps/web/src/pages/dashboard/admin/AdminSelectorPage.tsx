@@ -222,7 +222,7 @@ const AdminSelectorPage: React.FC = () => {
                                             </div>
                                             <div>
                                                 <div className="font-bold text-[#14223E]">{selector.username}</div>
-                                                <div className="text-[12px] text-slate-500">ID: {selector.id}</div>
+                                                {/* <div className="text-[12px] text-slate-500">ID: {selector.id}</div> */}
                                             </div>
                                         </div>
                                     </td>

@@ -14,32 +14,17 @@ export interface SelectorPayload {
   type?: string;
 }
 
-/**
- * Fetch all selectors
- * GET /api/users?type=selector
- */
 export const fetchSelectors = async (): Promise<Selector[]> => {
-  const response = await axios.get(
-    "/api/users?type=selector"
-  );
+  const response = await axios.get("/api/users?type=selector");
 
   return response.data;
 };
 
-/**
- * Register selector
- * POST /api/register
- */
-export const registerSelector = async (
-  payload: SelectorPayload
-) => {
-  const response = await axios.post(
-    "/api/register",
-    {
-      ...payload,
-      type: "selector",
-    }
-  );
+export const registerSelector = async (payload: SelectorPayload) => {
+  const response = await axios.post("/api/register", {
+    ...payload,
+    type: "selector",
+  });
 
   return response.data;
 };

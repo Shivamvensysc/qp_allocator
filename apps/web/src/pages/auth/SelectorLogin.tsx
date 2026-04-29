@@ -70,7 +70,6 @@ export default function SelectorLoginPage() {
 
     if (!selectedExam) {
       setError("Please select an examination");
-
       return;
     }
 

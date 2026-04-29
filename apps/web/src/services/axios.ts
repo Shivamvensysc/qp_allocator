@@ -4,7 +4,6 @@ import { getToken, clearToken } from "../utils/token";
 import { navigateTo } from "../utils/navigation";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -26,7 +25,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
 
 axiosInstance.interceptors.response.use(
   (response) => response,

@@ -44,24 +44,17 @@ export interface ExamPayload {
   subjects: any[];
 }
 
-
 export const fetchExams = async () => {
   const res = await axios.get("/api/exams");
   return res.data;
 };
 
-export const updateExamBody = async (
-  examId: number,
-  newName: string
-) => {
-  const response = await axios.put(
-    `/api/exams/${examId}`,
-    {
-      exam: { examBodyName: newName },
-      shifts: [],
-      subjects: [],
-    }
-  );
+export const updateExamBody = async (examId: number, newName: string) => {
+  const response = await axios.put(`/api/exams/${examId}`, {
+    exam: { examBodyName: newName },
+    shifts: [],
+    subjects: [],
+  });
 
   return response.data;
 };
@@ -84,16 +77,13 @@ export const updateExamStatus = async (examId: string, status: string) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
   return response.data;
 };
 
 // Save or Update Exam (POST / PUT)
-export const saveExam = async (
-  payload: ExamPayload,
-  examId?: string
-) => {
+export const saveExam = async (payload: ExamPayload, examId?: string) => {
   const token = localStorage.getItem("token");
 
   const config = {
@@ -106,20 +96,10 @@ export const saveExam = async (
   let response;
 
   if (examId) {
-    response = await axios.put(
-      `/api/exams/${examId}`,
-      payload,
-      config
-    );
+    response = await axios.put(`/api/exams/${examId}`, payload, config);
   } else {
-    response = await axios.post(
-      `/api/exams`,
-      payload,
-      config
-    );
+    response = await axios.post(`/api/exams`, payload, config);
   }
 
   return response.data;
 };
-
-

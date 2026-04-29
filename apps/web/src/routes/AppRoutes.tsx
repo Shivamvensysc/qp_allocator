@@ -81,7 +81,7 @@ export const AppRoutes = () => {
         />
       </Route>
 
-      {/* 404 */}
+      {/* 404 not found page */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

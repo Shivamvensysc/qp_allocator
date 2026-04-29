@@ -538,11 +538,11 @@ export default function ExamConfiguration() {
 
   return (
     <div className="w-full min-h-screen bg-[#F9FAFB] text-slate-900 font-sans">
-      <div className="max-w-[1600px] mx-auto p-4">
+      <div className="max-w-[1600px] mx-auto ">
         {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8">
-          <div className="max-w-2xl">
-            <h1 className="text-[28px] md:text-[34px] font-bold text-[#14223E] tracking-tight leading-tight mb-3">
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+          <div className="max-w-4xl">
+            <h1 className="text-xl md:text-3xl font-bold text-[#14223E] tracng-tight leading-tight mb-1">
               Exam Configuration
             </h1>
             <p className="text-[14px] md:text-[15px] text-slate-600 leading-relaxed">
@@ -552,7 +552,7 @@ export default function ExamConfiguration() {
           </div>
 
           {/* Stepper */}
-          <div className="flex bg-[#F5F5FA] rounded-xl px-4 md:px-6 py-4 gap-4 md:gap-8 shrink-0 self-start">
+          <div className="flex bg-gray-200 border border-slate-400 rounded-xl mb-4 px-4 md:px-6 py-3 gap-4 md:gap-8 shrink-0 self-start">
             <div className="flex flex-col">
               <span className="text-[10px] font-bold text-[#8B9BB4] uppercase tracking-widest mb-1.5">
                 Current Step
@@ -580,7 +580,7 @@ export default function ExamConfiguration() {
         {/* Main Grid Layout */}
         <div className="grid gap-6 lg:grid-cols-[1fr_320px] ">
           {/* Left Column */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Create Exam Event Block */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-300 p-4 md:p-6 lg:p-6 relative overflow-hidden">
               {/* Faded Calendar Icon */}
@@ -595,8 +595,8 @@ export default function ExamConfiguration() {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 md:gap-y-7 mb-8 md:mb-10 relative z-10">
-                <div className="flex flex-col gap-1.5 md:gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 md:gap-y-4 mb-8  relative z-10">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Exam Name
                   </label>
@@ -618,7 +618,7 @@ export default function ExamConfiguration() {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Exam Code
                   </label>
@@ -640,7 +640,7 @@ export default function ExamConfiguration() {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Regulatory Body
                   </label>
@@ -664,7 +664,7 @@ export default function ExamConfiguration() {
                     )}
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Randomization Cycles
                   </label>
@@ -689,7 +689,7 @@ export default function ExamConfiguration() {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Start Date
                   </label>
@@ -720,7 +720,7 @@ export default function ExamConfiguration() {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     End Date
                   </label>
@@ -751,7 +751,7 @@ export default function ExamConfiguration() {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Academic Year
                   </label>
@@ -766,7 +766,7 @@ export default function ExamConfiguration() {
                   </select>
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Total Paper Sets
                   </label>
@@ -791,7 +791,7 @@ export default function ExamConfiguration() {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Rotation Mode
                   </label>
@@ -814,7 +814,7 @@ export default function ExamConfiguration() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Reusable Paper Sets
                   </label>
@@ -844,7 +844,7 @@ export default function ExamConfiguration() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-1.5 md:gap-2">
+                <div className="flex flex-col gap-1.5 ">
                   <label className="text-[10px] md:text-xs font-bold text-slate-600 uppercase tracking-wider">
                     Set Coding Type
                   </label>
@@ -1318,8 +1318,8 @@ export default function ExamConfiguration() {
             </div>
 
             {/* Subject & Shift Matrix Block */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 md:p-6 lg:p-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-4 md:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                 <div className="flex items-center gap-4">
                   <div className="w-1.5 h-6 bg-emerald-400 rounded-full"></div>
                   <h2 className="text-lg md:text-xl font-bold text-slate-800">
@@ -1329,7 +1329,8 @@ export default function ExamConfiguration() {
                 {!isSubjectBoxOpen && (
                   <button
                     onClick={() => setIsSubjectBoxOpen(true)}
-                    className="text-slate-600 text-sm font-semibold hover:text-slate-900 transition flex items-center justify-center gap-2 w-full sm:w-auto"
+                    // className=" text-slate-600 border border-slate-200 py-2 px-4 rounded-lg text-sm font-semibold hover:text-slate-900 transition flex items-center justify-center gap-2 w-full sm:w-auto"
+                    className="bg-[#142135] hover:bg-[#14253B] text-white text-xs font-semibold px-4 py-2.5 rounded-md flex items-center gap-2 transition w-full sm:w-auto justify-center"
                   >
                     <Plus className="w-4 h-4" /> Add New Subject
                   </button>
@@ -1353,23 +1354,23 @@ export default function ExamConfiguration() {
               )}
 
               {isSubjectBoxOpen && (
-                <div className="bg-[#F8F9FA] border border-slate-200 rounded-2xl p-4 md:p-6 mb-6 md:mb-8 shadow-sm transition-all">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
-                      <Plus className="w-4 h-4 text-emerald-600" />
+                <div className="bg-[#F8F9FA] border border-slate-300 rounded-2xl p-4 md:p-5  shadow-sm transition-all">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 border border-slate-200 bg-emerald-50 rounded-lg flex items-center justify-center">
+                      <Plus className="w-4 h-4 text-emerald-700" />
                     </div>
                     <h4 className="font-bold text-slate-800 text-sm">
                       Add New Subject
                     </h4>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                      <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
                         Subject Name
                       </label>
                       <input
-                        className="bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none w-full"
+                        className="bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none w-full"
                         placeholder="e.g. add new subject"
                         value={newSubject.name}
                         onChange={(e) =>
@@ -1379,16 +1380,16 @@ export default function ExamConfiguration() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                  <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-200">
                     <button
                       onClick={() => setIsSubjectBoxOpen(false)}
-                      className="text-slate-500 hover:text-slate-800 text-xs font-bold px-4 py-2 w-full sm:w-auto"
+                      className="text-slate-600 border border-slate-300 rounded-lg hover:text-slate-800 text-xs font-bold px-4 py-2 w-full sm:w-auto"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleAddSubject}
-                      className="bg-[#0B1727] hover:bg-[#11213D] text-white text-xs font-bold px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 shadow-sm transition w-full sm:w-auto"
+                      className="bg-[#0B1727] hover:bg-[#11213D] text-white text-xs font-bold px-6 py-2.5 rounded-lg flex items-center justify-center gap-2 shadow-sm transition w-full sm:w-auto"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       Register Subject
@@ -1512,16 +1513,16 @@ export default function ExamConfiguration() {
           {/* Right Column */}
           <div className="space-y-6">
             {/* Curator's Pro-Tip Block */}
-            <div className="bg-[#11213D] rounded-2xl p-5 md:p-6 text-white relative overflow-hidden">
-              <div className="absolute -bottom-4 right-2 opacity-10">
+            <div className="bg-[#11213D] rounded-xl p-5  text-white relative overflow-hidden">
+              <div className="absolute -bottom-0 right-2 opacity-10">
                 <HelpCircle className="w-24 h-24 md:w-32 md:h-32" />
               </div>
 
-              <h3 className="text-[14px] md:text-[15px] font-bold tracking-tight mb-6 relative z-10">
+              <h3 className="text-[14px] md:text-[15px] font-bold tracking-tight mb-3 relative z-10">
                 Curator&apos;s Pro-Tip
               </h3>
 
-              <ul className="space-y-5 relative z-10">
+              <ul className="space-y-2 relative z-10">
                 <li className="flex items-start gap-4 text-[12px] md:text-[13px] text-slate-300 leading-relaxed">
                   <div className="w-5 h-5 flex items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />
@@ -1545,25 +1546,25 @@ export default function ExamConfiguration() {
             </div>
 
             {/* Live Configuration Summary Block */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6">
-              <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-300 p-5">
+              <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
                 Live Configuration Summary
               </h3>
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between pb-4 border-b border-slate-50">
+              <div >
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200">
                   <span className="text-[13px] md:text-[14px] text-slate-600">
                     Total Subjects
                   </span>
-                  <span className="text-2xl font-bold text-[#14223E] leading-none">
+                  <span className="text-xl font-bold text-[#14223E] leading-none">
                     {subjects.length.toString().padStart(2, "0")}
                   </span>
                 </div>
-                <div className="flex items-center justify-between pb-4 border-b border-slate-50">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200">
                   <span className="text-[13px] md:text-[14px] text-slate-600">
                     Scheduled Shifts
                   </span>
-                  <span className="text-2xl font-bold text-[#14223E] leading-none">
+                  <span className="text-xl font-bold text-[#14223E] leading-none">
                     {shifts.length.toString().padStart(2, "0")}
                   </span>
                 </div>
@@ -1571,7 +1572,7 @@ export default function ExamConfiguration() {
                   <span className="text-[13px] md:text-[14px] text-slate-600">
                     Unique Paper Sets
                   </span>
-                  <span className="text-2xl font-bold text-[#14223E] leading-none">
+                  <span className="text-xl font-bold text-[#14223E] leading-none">
                     {totalSets.toString().padStart(2, "0")}
                   </span>
                 </div>
@@ -1581,7 +1582,7 @@ export default function ExamConfiguration() {
         </div>
 
         {/* Footer Action Bar */}
-        <div className="mt-8 md:mt-10 flex flex-col md:flex-row items-center justify-between gap-6 p-5 md:p-8 bg-white rounded-2xl md:rounded-3xl shadow-xl border border-slate-100">
+        <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-6 p-5 md:p-8 bg-white rounded-2xl md:rounded-3xl shadow-xl border border-slate-100">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-emerald-50 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5 md:w-6 md:h-6 text-emerald-600" />

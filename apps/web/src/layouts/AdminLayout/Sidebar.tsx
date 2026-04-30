@@ -412,7 +412,7 @@ const LogoutConfirmationModal: React.FC<{
 
 const AdminSidebar: React.FC<{ isCollapsed: boolean; onToggle: () => void }> = ({ 
   isCollapsed, 
-  onToggle 
+  
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -447,7 +447,7 @@ const AdminSidebar: React.FC<{ isCollapsed: boolean; onToggle: () => void }> = (
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 overflow-hidden space-y-1 flex flex-col px-3 py-2 mt-4">
+          <nav className="flex-1 overflow-hidden space-y-1 flex flex-col px-3  mt-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               const active = pathname === item.href;

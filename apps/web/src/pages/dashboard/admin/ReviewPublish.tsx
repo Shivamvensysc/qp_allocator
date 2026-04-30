@@ -123,7 +123,7 @@ export default function ReviewPublish() {
               </h2>
             </div>
             <button
-              onClick={() => navigate(`/admin/exam-configuration?id=${examId}`)}
+              onClick={() => navigate(`/admin/examconfigration?id=${examId}`)}
               className="text-sm font-bold text-[#14223E] hover:text-blue-600 transition"
             >
               Edit
@@ -368,7 +368,7 @@ export default function ReviewPublish() {
 
         <div className="flex items-center gap-6">
           <button
-            onClick={() => navigate(`/admin/exam-configuration?id=${examId}`)}
+            onClick={() => navigate(`/admin/examconfigration?id=${examId}`)}
             className="text-[14px] font-bold text-[#14223E] hover:text-blue-600 transition"
           >
             Back to Configuration

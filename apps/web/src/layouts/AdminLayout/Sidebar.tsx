@@ -431,7 +431,7 @@ const AdminSidebar: React.FC<{ isCollapsed: boolean; onToggle: () => void }> = (
           {/* Logo */}
           <div className={`px-6 py-4 flex flex-col gap-1 flex-shrink-0 transition-all duration-300 ${
             isCollapsed ? 'items-center px-2' : ''
-          }`}>
+          }`}> 
             {!isCollapsed ? (
               <>
                 <h1 className="text-xl font-bold tracking-wide text-white">
